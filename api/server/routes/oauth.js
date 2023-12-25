@@ -127,6 +127,8 @@ router.get(
   passport.authenticate('lark', {
     scope: ['profile', 'email'],
     session: false,
+    failureMessage: true,
+    failWithError: true,
   }),
 );
 
