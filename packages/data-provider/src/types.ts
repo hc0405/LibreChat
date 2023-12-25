@@ -171,6 +171,7 @@ export type TStartupConfig = {
   facebookLoginEnabled: boolean;
   openidLoginEnabled: boolean;
   githubLoginEnabled: boolean;
+  larkLoginEnabled: boolean;
   openidLabel: string;
   openidImageUrl: string;
   discordLoginEnabled: boolean;

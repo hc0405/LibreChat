@@ -133,7 +133,7 @@ function Login() {
             </div>
           </>
         )}
-        {startupConfig?.socialLoginEnabled && (
+        {startupConfig?.larkLoginEnabled && startupConfig?.socialLoginEnabled && (
           <>
             <div className="mt-2 flex gap-x-2">
               <a

@@ -22,7 +22,7 @@ router.get('/', async function (req, res) {
       openidImageUrl: process.env.OPENID_IMAGE_URL,
       githubLoginEnabled: !!process.env.GITHUB_CLIENT_ID && !!process.env.GITHUB_CLIENT_SECRET,
       discordLoginEnabled: !!process.env.DISCORD_CLIENT_ID && !!process.env.DISCORD_CLIENT_SECRET,
-      larkLoginEnabled: !!process.env.LATK_CLIENT_ID && !!process.env.LARK_CLIENT_SECRET,
+      larkLoginEnabled: !!process.env.LARK_CLIENT_ID && !!process.env.LARK_CLIENT_SECRET,
       serverDomain: process.env.DOMAIN_SERVER || 'http://localhost:3080',
       emailLoginEnabled,
       registrationEnabled: isEnabled(process.env.ALLOW_REGISTRATION),

@@ -47,6 +47,8 @@ describe.skip('GET /', () => {
     process.env.GITHUB_CLIENT_SECRET = 'Test Github client Secret';
     process.env.DISCORD_CLIENT_ID = 'Test Discord client Id';
     process.env.DISCORD_CLIENT_SECRET = 'Test Discord client Secret';
+    process.env.LARK_CLIENT_ID = 'Test Lark client Id';
+    process.env.LARK_CLIENT_SECRET = 'Test Lark client Secret';
     process.env.DOMAIN_SERVER = 'http://test-server.com';
     process.env.ALLOW_REGISTRATION = 'true';
     process.env.ALLOW_SOCIAL_LOGIN = 'true';
@@ -62,6 +64,7 @@ describe.skip('GET /', () => {
       openidLabel: 'Test OpenID',
       openidImageUrl: 'http://test-server.com',
       githubLoginEnabled: true,
+      larkLoginEnabled: true,
       discordLoginEnabled: true,
       serverDomain: 'http://test-server.com',
       emailLoginEnabled: 'true',
