@@ -11,7 +11,6 @@ async function larkLogin() {
       clientSecret: process.env.LARK_CLIENT_SECRET,
       callbackURL: `${process.env.DOMAIN_SERVER}${process.env.LARK_CALLBACK_URL}`,
       scope: ['profile', 'email'],
-      scopeSeparator: '+',
     },
     larkCB,
   );

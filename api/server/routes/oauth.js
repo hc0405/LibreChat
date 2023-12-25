@@ -132,10 +132,6 @@ router.get(
 
 router.get(
   '/lark/callback',
-  (req, res, next) => {
-    next();
-  },
-
   passport.authenticate('lark', {
     failureRedirect: `${domains.client}/login`,
     failureMessage: true,
