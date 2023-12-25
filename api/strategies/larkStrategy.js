@@ -15,6 +15,7 @@ async function larkLogin() {
     larkCB,
   );
 
+  logger.info(` Client ID: ${larkStrategy._oauth2._clientId}`);
   larkStrategy.userProfile = function (accessToken, done) {
     this._userProfileURL = 'https://anycross-sg.larksuite.com/sso/LJYVD7PB6K6/oauth2/userinfo';
     this._oauth2.get(this._userProfileURL, accessToken, function (err, body) {
