@@ -11,12 +11,15 @@ async function larkLogin() {
       clientSecret: process.env.LARK_CLIENT_SECRET,
       callbackURL: `${process.env.DOMAIN_SERVER}${process.env.LARK_CALLBACK_URL}`,
       scope: ['profile', 'email'],
+      scopeSeparator: '+',
     },
     larkCB,
   );
 
   logger.info(` Client ID: ${larkStrategy._oauth2._clientId}`);
+
   larkStrategy.userProfile = function (accessToken, done) {
+    logger.info('Lark Get User Info');
     this._userProfileURL = 'https://anycross-sg.larksuite.com/sso/LJYVD7PB6K6/oauth2/userinfo';
     this._oauth2.get(this._userProfileURL, accessToken, function (err, body) {
       if (err) {
