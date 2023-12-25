@@ -95,5 +95,8 @@
       "admin/",
       "packages/"
     ]
+  },
+  "dependencies": {
+    "passport-oauth2": "^1.7.0"
   }
 }

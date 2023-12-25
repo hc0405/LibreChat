@@ -20,6 +20,8 @@ afterEach(() => {
   delete process.env.GITHUB_CLIENT_SECRET;
   delete process.env.DISCORD_CLIENT_ID;
   delete process.env.DISCORD_CLIENT_SECRET;
+  delete process.env.LARK_CLIENT_ID;
+  delete process.env.LARK_CLIENT_SECRET;
   delete process.env.DOMAIN_SERVER;
   delete process.env.ALLOW_REGISTRATION;
   delete process.env.ALLOW_SOCIAL_LOGIN;

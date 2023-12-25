@@ -1,7 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetStartupConfig } from 'librechat-data-provider/react-query';
-import { GoogleIcon, FacebookIcon, OpenIDIcon, GithubIcon, DiscordIcon } from '~/components';
+import {
+  GoogleIcon,
+  FacebookIcon,
+  OpenIDIcon,
+  GithubIcon,
+  DiscordIcon,
+  LarkIcon,
+} from '~/components';
 import { useAuthContext } from '~/hooks/AuthContext';
 import { getLoginError } from '~/utils';
 import { useLocalize } from '~/hooks';
@@ -122,6 +129,20 @@ function Login() {
               >
                 <DiscordIcon />
                 <p>{localize('com_auth_discord_login')}</p>
+              </a>
+            </div>
+          </>
+        )}
+        {startupConfig?.socialLoginEnabled && (
+          <>
+            <div className="mt-2 flex gap-x-2">
+              <a
+                aria-label="Login with Lark"
+                className="justify-left flex w-full items-center space-x-3 rounded-md border border-gray-300 px-5 py-3 hover:bg-gray-50 focus:ring-2 focus:ring-violet-600 focus:ring-offset-1"
+                href={`${startupConfig.serverDomain}/oauth/lark`}
+              >
+                <LarkIcon />
+                <p>{localize('com_auth_lark_login')}</p>
               </a>
             </div>
           </>

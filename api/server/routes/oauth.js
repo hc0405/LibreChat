@@ -122,4 +122,27 @@ router.get(
   oauthHandler,
 );
 
+router.get(
+  '/lark',
+  passport.authenticate('lark', {
+    scope: ['profile', 'email'],
+    session: false,
+  }),
+);
+
+router.get(
+  '/lark/callback',
+  (req, res, next) => {
+    next();
+  },
+
+  passport.authenticate('lark', {
+    failureRedirect: `${domains.client}/login`,
+    failureMessage: true,
+    session: false,
+    scope: ['profile', 'email'],
+  }),
+  oauthHandler,
+);
+
 module.exports = router;

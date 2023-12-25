@@ -35,6 +35,8 @@ const languageMap: { [key: string]: unknown } = {
   'vi-VN': Vietnamese,
   'tr-TR': Turkish,
   'nl-NL': Dutch,
+  'zh-TW': TraditionalChinese,
+
   // Add additional language mappings here
 };
 
