@@ -10,7 +10,7 @@ async function larkLogin() {
       clientID: process.env.LARK_CLIENT_ID,
       clientSecret: process.env.LARK_CLIENT_SECRET,
       callbackURL: `${process.env.DOMAIN_SERVER}${process.env.LARK_CALLBACK_URL}`,
-      scope: ['profile', 'email'],
+      scope: ['profile', 'email', 'phone'],
       customHeaders: { 'Content-Type': 'application/x-www-form-urlencoded' },
     },
     larkCB,
@@ -32,10 +32,24 @@ async function larkLogin() {
       } catch (ex) {
         return done(new Error('Failed to parse user profile'));
       }
+      let emailExist = json.email || json.enterprise_email;
+      let result = '';
 
+      if (emailExist) {
+        result += emailExist;
+      }
+      if (emailExist && json.phone_number) {
+        result += '_';
+      }
+      if (json.phone_number) {
+        result += json.phone_number;
+      }
+      if (json.short_phone_number) {
+        result += '(' + json.short_phone_number + ')';
+      }
       const profile = {
         provider: 'lark',
-        email: json.email,
+        email: result,
         displayName: `${json.name}(${json.another_name})`,
         name: json.name,
         another_name: json.another_name,

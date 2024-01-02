@@ -125,7 +125,7 @@ router.get(
 router.get(
   '/lark',
   passport.authenticate('lark', {
-    scope: ['profile', 'email'],
+    scope: ['profile', 'email', 'phone'],
     session: false,
     failureMessage: true,
     failWithError: true,
@@ -138,7 +138,7 @@ router.get(
     failureRedirect: `${domains.client}/login`,
     failureMessage: true,
     session: false,
-    scope: ['profile', 'email'],
+    scope: ['profile', 'email', 'phone'],
   }),
   oauthHandler,
 );
