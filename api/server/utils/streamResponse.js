@@ -23,7 +23,13 @@ const sendMessage = (res, message, event = 'message') => {
     return;
   }
   let ok = res.write(`event: ${event}\ndata: ${JSON.stringify(message)}\n\n`);
-  logger.warn(`${JSON.stringify(message)} res:${ok}`);
+  //logger.warn(`${JSON.stringify(message)} res:${res}`);
+  //logger.warn(`Socket closed:${res.closed} status:${res.statusCode} finished:${res.finished}`)
+  if (!ok) {
+    logger.warn(
+      `Socket closed:${res.closed} status:${res.statusCode} finished:${res.finished} writable:${res.writable} writableLength:${res.writableLength}  destroyed:${res.destroyed} writableFinished:${res.writableFinished}`,
+    );
+  }
   //logger.warn(ok);
 };
 
