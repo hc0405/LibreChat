@@ -94,12 +94,12 @@ export default function useServerStream(submission: TSubmission | null) {
     if (requestMessage.parentMessageId == '00000000-0000-0000-0000-000000000000') {
       setTimeout(() => {
         refreshConversations();
-      }, 2000);
+      }, 10000);
 
       // in case it takes too long.
       setTimeout(() => {
         refreshConversations();
-      }, 5000);
+      }, 15000);
     }
 
     setConversation((prevState) => ({
@@ -160,12 +160,12 @@ export default function useServerStream(submission: TSubmission | null) {
     if (requestMessage.parentMessageId == '00000000-0000-0000-0000-000000000000') {
       setTimeout(() => {
         refreshConversations();
-      }, 2000);
+      }, 10000);
 
       // in case it takes too long.
       setTimeout(() => {
         refreshConversations();
-      }, 5000);
+      }, 15000);
     }
 
     setConversation((prevState) => ({

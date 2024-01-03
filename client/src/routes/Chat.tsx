@@ -36,7 +36,7 @@ export default function Chat() {
       if (!isAuthenticated) {
         navigate('/login', { replace: true });
       }
-    }, 3000);
+    }, 30000);
 
     return () => {
       clearTimeout(timeout);

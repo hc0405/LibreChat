@@ -103,12 +103,12 @@ export default function useSSE(submission: TSubmission | null, index = 0) {
     if (requestMessage?.parentMessageId == '00000000-0000-0000-0000-000000000000') {
       setTimeout(() => {
         invalidateConvos();
-      }, 2000);
+      }, 10000);
 
       // in case it takes too long.
       setTimeout(() => {
         invalidateConvos();
-      }, 5000);
+      }, 15000);
     }
 
     setConversation((prevState) => {
@@ -181,12 +181,12 @@ export default function useSSE(submission: TSubmission | null, index = 0) {
     if (requestMessage.parentMessageId == '00000000-0000-0000-0000-000000000000') {
       setTimeout(() => {
         invalidateConvos();
-      }, 1500);
+      }, 10000);
 
       // in case it takes too long.
       setTimeout(() => {
         invalidateConvos();
-      }, 5000);
+      }, 15000);
     }
 
     setConversation((prevState) => {
