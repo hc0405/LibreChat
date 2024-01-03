@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const { saveMessage, getMessages } = require('~/models/Message');
 const { getConvo } = require('~/models/Conversation');
-
+const { logger } = require('~/config');
 /**
  * Sends error data in Server Sent Events format and ends the response.
  * @param {object} res - The server response.
@@ -22,7 +22,9 @@ const sendMessage = (res, message, event = 'message') => {
   if (message.length === 0) {
     return;
   }
-  res.write(`event: ${event}\ndata: ${JSON.stringify(message)}\n\n`);
+  let ok = res.write(`event: ${event}\ndata: ${JSON.stringify(message)}\n\n`);
+  logger.warn(`${JSON.stringify(message)} res:${ok}`);
+  //logger.warn(ok);
 };
 
 /**
