@@ -847,7 +847,7 @@ ${convo}
         err?.message?.includes('abort') ||
         (err instanceof OpenAI.APIError && err?.message?.includes('abort'))
       ) {
-        return '';
+        return intermediateReply;
       }
       if (
         err?.message?.includes(
@@ -859,7 +859,6 @@ ${convo}
         (err instanceof OpenAI.OpenAIError && err?.message?.includes('missing finish_reason'))
       ) {
         logger.error('[OpenAIClient] Known OpenAI error:', err);
-        await abortController.abortCompletion();
         return intermediateReply;
       } else if (err instanceof OpenAI.APIError) {
         if (intermediateReply) {
