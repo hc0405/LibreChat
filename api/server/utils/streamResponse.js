@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { parseConvo } = require('librechat-data-provider');
 const { saveMessage, getMessages } = require('~/models/Message');
 const { getConvo } = require('~/models/Conversation');
 const { logger } = require('~/config');
@@ -72,12 +73,21 @@ const sendError = async (res, options, callback) => {
 
   if (!errorMessage.error) {
     const requestMessage = { messageId: parentMessageId, conversationId };
-    const query = await getMessages(requestMessage);
+    let query = [],
+      convo = {};
+    try {
+      query = await getMessages(requestMessage);
+      convo = await getConvo(user, conversationId);
+    } catch (err) {
+      logger.error('[sendError] Error retrieving conversation data:', err);
+      convo = parseConvo(errorMessage);
+    }
+
     return sendMessage(res, {
       final: true,
       requestMessage: query?.[0] ? query[0] : requestMessage,
       responseMessage: errorMessage,
-      conversation: await getConvo(user, conversationId),
+      conversation: convo,
     });
   }
 
