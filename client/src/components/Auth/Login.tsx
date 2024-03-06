@@ -154,7 +154,7 @@ function Login() {
                 href={`${startupConfig.serverDomain}/oauth/lark`}
               >
                 <LarkIcon />
-                <p>{localize('com_auth_lark_login')}</p>
+                <p>雨揚集團 {localize('com_auth_lark_login')}</p>
               </a>
             </div>
           </>

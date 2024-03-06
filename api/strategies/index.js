@@ -4,6 +4,7 @@ const githubLogin = require('./githubStrategy');
 const discordLogin = require('./discordStrategy');
 const facebookLogin = require('./facebookStrategy');
 const larkLogin = require('./larkStrategy');
+const aroLogin = require('./aroStrategy');
 //const larkStrategy = require('./larkStrategy');
 const setupOpenId = require('./openidStrategy');
 const jwtLogin = require('./jwtStrategy');
@@ -17,5 +18,6 @@ module.exports = {
   facebookLogin,
   setupOpenId,
   larkLogin,
+  aroLogin,
   //larkStrategy,
 };

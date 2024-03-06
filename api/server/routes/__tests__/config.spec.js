@@ -68,7 +68,7 @@ describe.skip('GET /', () => {
       openidLabel: 'Test OpenID',
       openidImageUrl: 'http://test-server.com',
       larkLoginEnabled: true,
-      discordLoginEnabled: true,
+      aroLoginEnabled: true,
       serverDomain: 'http://test-server.com',
       emailLoginEnabled: 'true',
       registrationEnabled: 'true',
