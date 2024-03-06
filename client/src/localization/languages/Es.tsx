@@ -1,8 +1,11 @@
 // Spanish phrases
+// file deepcode ignore NoHardcodedPasswords: No hardcoded values present in this file
+// file deepcode ignore HardcodedNonCryptoSecret: No hardcoded secrets present in this file
 
 export default {
   com_ui_examples: 'Ejemplos',
   com_ui_new_chat: 'Nuevo Chat',
+  com_ui_happy_birthday: '¡Es mi primer cumpleaños!',
   com_ui_example_quantum_computing: 'Explicar la computación cuántica en términos simples',
   com_ui_example_10_year_old_b_day:
     '¿Tienes alguna idea creativa para el cumpleaños de un niño de 10 años?',

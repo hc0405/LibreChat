@@ -1,3 +1,5 @@
+// file deepcode ignore NoRateLimitingForLogin: Rate limiting is handled by the `loginLimiter` middleware
+
 const passport = require('passport');
 const express = require('express');
 const router = express.Router();
@@ -135,6 +137,27 @@ router.get(
 router.get(
   '/lark/callback',
   passport.authenticate('lark', {
+    failureRedirect: `${domains.client}/login`,
+    failureMessage: true,
+    session: false,
+    scope: ['profile', 'email', 'phone'],
+  }),
+  oauthHandler,
+);
+
+router.get(
+  '/aro',
+  passport.authenticate('aro', {
+    scope: ['profile', 'email', 'phone'],
+    session: false,
+    failureMessage: true,
+    failWithError: true,
+  }),
+);
+
+router.get(
+  '/aro/callback',
+  passport.authenticate('aro', {
     failureRedirect: `${domains.client}/login`,
     failureMessage: true,
     session: false,

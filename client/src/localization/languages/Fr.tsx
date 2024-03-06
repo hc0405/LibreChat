@@ -1,8 +1,11 @@
 // French phrases
+// file deepcode ignore NoHardcodedPasswords: No hardcoded values present in this file
+// file deepcode ignore HardcodedNonCryptoSecret: No hardcoded secrets present in this file
 
 export default {
   com_ui_examples: 'Exemples',
   com_ui_new_chat: 'Nouvelle conversation',
+  com_ui_happy_birthday: 'C\'est mon premier anniversaire !',
   com_ui_example_quantum_computing: 'Expliquer l\'informatique quantique en termes simples',
   com_ui_example_10_year_old_b_day:
     'Tu as des idées créatives pour l\'anniversaire d\'un enfant de 10 ans ?',
