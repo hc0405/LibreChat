@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { EModelEndpoint } from 'librechat-data-provider';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useUpdateMessageMutation } from 'librechat-data-provider/react-query';
 import type { TEditProps } from '~/common';
-import Container from '~/components/Messages/Content/Container';
 import { cn, removeFocusOutlines } from '~/utils';
 import { useChatContext } from '~/Providers';
 import { useLocalize } from '~/hooks';
+import Container from './Container';
 
 const EditMessage = ({
   text,
@@ -39,11 +39,16 @@ const EditMessage = ({
 
   const resubmitMessage = () => {
     if (message.isCreatedByUser) {
-      ask({
-        text: editedText,
-        parentMessageId,
-        conversationId,
-      });
+      ask(
+        {
+          text: editedText,
+          parentMessageId,
+          conversationId,
+        },
+        {
+          resubmitFiles: true,
+        },
+      );
 
       setSiblingIdx((siblingIdx ?? 0) - 1);
     } else {
@@ -94,13 +99,24 @@ const EditMessage = ({
     enterEdit(true);
   };
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        enterEdit(true);
+      }
+    },
+    [enterEdit],
+  );
+
   return (
-    <Container>
+    <Container message={message}>
       <TextareaAutosize
         ref={textAreaRef}
         onChange={(e) => {
           setEditedText(e.target.value);
         }}
+        onKeyDown={handleKeyDown}
         data-testid="message-text-editor"
         className={cn(
           'markdown prose dark:prose-invert light whitespace-pre-wrap break-words dark:text-gray-20',
