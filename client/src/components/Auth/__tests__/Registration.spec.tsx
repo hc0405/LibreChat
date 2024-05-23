@@ -40,6 +40,8 @@ const setup = ({
       openidLoginEnabled: true,
       openidLabel: 'Test OpenID',
       openidImageUrl: 'http://test-server.com',
+      larkLoginEnabled: true,
+      emailLoginEnabled: true,
       registrationEnabled: true,
       socialLoginEnabled: true,
       serverDomain: 'mock-server',

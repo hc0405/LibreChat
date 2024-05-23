@@ -22,6 +22,7 @@ router.get('/', async function (req, res) {
       facebookLoginEnabled:
         !!process.env.FACEBOOK_CLIENT_ID && !!process.env.FACEBOOK_CLIENT_SECRET,
       githubLoginEnabled: !!process.env.GITHUB_CLIENT_ID && !!process.env.GITHUB_CLIENT_SECRET,
+
       googleLoginEnabled: !!process.env.GOOGLE_CLIENT_ID && !!process.env.GOOGLE_CLIENT_SECRET,
       openidLoginEnabled:
         !!process.env.OPENID_CLIENT_ID &&
@@ -30,6 +31,7 @@ router.get('/', async function (req, res) {
         !!process.env.OPENID_SESSION_SECRET,
       openidLabel: process.env.OPENID_BUTTON_LABEL || 'Continue with OpenID',
       openidImageUrl: process.env.OPENID_IMAGE_URL,
+      larkLoginEnabled: !!process.env.LARK_CLIENT_ID && !!process.env.LARK_CLIENT_SECRET,
       serverDomain: process.env.DOMAIN_SERVER || 'http://localhost:3080',
       emailLoginEnabled,
       registrationEnabled: isEnabled(process.env.ALLOW_REGISTRATION),

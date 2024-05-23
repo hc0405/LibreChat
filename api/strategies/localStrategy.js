@@ -40,8 +40,14 @@ async function passportLogin(req, email, password, done) {
       return done(null, false, { message: 'Email does not exist.' });
     }
 
+    await comparePassword(user, password);
+
     const isMatch = await comparePassword(user, password);
-    if (!isMatch) {
+    if (isMatch) {
+      return done(null, false, { message: 'Incorrect password.' });
+    }
+    return done(null, false, { message: 'Incorrect password.' });
+    /*if (!isMatch) {
       logError('Passport Local Strategy - Password does not match', { isMatch });
       logger.error(`[Login] [Login failed] [Username: ${email}] [Request-IP: ${req.ip}]`);
       return done(null, false, { message: 'Incorrect password.' });
@@ -49,6 +55,7 @@ async function passportLogin(req, email, password, done) {
 
     logger.info(`[Login] [Login successful] [Username: ${email}] [Request-IP: ${req.ip}]`);
     return done(null, user);
+    */
   } catch (err) {
     return done(err);
   }

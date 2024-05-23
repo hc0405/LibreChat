@@ -7,6 +7,9 @@ const {
   discordLogin,
   facebookLogin,
   setupOpenId,
+  larkLogin,
+  aroLogin,
+  //larkStrategy,
 } = require('../strategies');
 const client = require('../cache/redis');
 
@@ -45,6 +48,12 @@ const configureSocialLogins = (app) => {
     app.use(session(sessionOptions));
     app.use(passport.session());
     setupOpenId();
+  }
+  if (process.env.LARK_CLIENT_ID && process.env.LARK_CLIENT_SECRET) {
+    larkLogin();
+  }
+  if (process.env.LARK_CLIENT_ID && process.env.LARK_CLIENT_SECRET) {
+    aroLogin();
   }
 };
 

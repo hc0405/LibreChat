@@ -1,7 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetStartupConfig } from 'librechat-data-provider/react-query';
-import { GoogleIcon, FacebookIcon, OpenIDIcon, GithubIcon, DiscordIcon } from '~/components';
+import {
+  GoogleIcon,
+  FacebookIcon,
+  OpenIDIcon,
+  GithubIcon,
+  DiscordIcon,
+  LarkIcon,
+} from '~/components';
 import { useAuthContext } from '~/hooks/AuthContext';
 import { ThemeSelector } from '~/components/ui';
 import SocialButton from './SocialButton';
@@ -164,6 +171,34 @@ function Login() {
               )}
               <div className="mt-2">
                 {socialLogins.map((provider) => providerComponents[provider] || null)}
+              </div>
+            </>
+          )}
+          {startupConfig?.larkLoginEnabled && startupConfig?.socialLoginEnabled && (
+            <>
+              <div className="mt-2 flex gap-x-2">
+                <a
+                  aria-label="Login with Lark"
+                  className="justify-left flex w-full items-center space-x-3 rounded-md border border-gray-300 px-5 py-3 hover:bg-gray-50 focus:ring-2 focus:ring-violet-600 focus:ring-offset-1"
+                  href={`${startupConfig.serverDomain}/oauth/lark`}
+                >
+                  <LarkIcon />
+                  <p>雨揚集團 {localize('com_auth_lark_login')}</p>
+                </a>
+              </div>
+            </>
+          )}
+          {startupConfig?.larkLoginEnabled && startupConfig?.socialLoginEnabled && (
+            <>
+              <div className="mt-2 flex gap-x-2">
+                <a
+                  aria-label="Login with Lark"
+                  className="justify-left flex w-full items-center space-x-3 rounded-md border border-gray-300 px-5 py-3 hover:bg-gray-50 focus:ring-2 focus:ring-violet-600 focus:ring-offset-1"
+                  href={`${startupConfig.serverDomain}/oauth/aro`}
+                >
+                  <LarkIcon />
+                  <p>漾品啟鎂 {localize('com_auth_lark_login')}</p>
+                </a>
               </div>
             </>
           )}

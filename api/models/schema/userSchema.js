@@ -74,6 +74,11 @@ const userSchema = mongoose.Schema(
       unique: true,
       sparse: true,
     },
+    larkId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
     plugins: {
       type: Array,
       default: [],

@@ -81,6 +81,7 @@ export default {
   com_auth_facebook_login: '使用 Facebook 登入',
   com_auth_github_login: '使用 GitHub 登入',
   com_auth_discord_login: '使用 Discord 登入',
+  com_auth_lark_login: '使用 Lark 登入',
   com_auth_email: '電子郵件',
   com_auth_email_required: '電子郵件必填',
   com_auth_email_min_length: '電子郵件長度必須至少有 6 個字元',

@@ -96,7 +96,9 @@ const startServer = async () => {
       logger.info(
         `Server listening on all interfaces at port ${port}. Use http://localhost:${port} to access it`,
       );
+      logger.info(`Lark Env:${process.env.LARK_CLIENT_ID}`);
     } else {
+      logger.info(`Lark:${process.env.LARK_CLIENT_ID}`);
       logger.info(`Server listening at http://${host == '0.0.0.0' ? 'localhost' : host}:${port}`);
     }
   });

@@ -6,7 +6,7 @@ type TUseTimeoutParams = {
 };
 type TTimeout = ReturnType<typeof setTimeout> | null;
 
-function useTimeout({ callback, delay = 400 }: TUseTimeoutParams) {
+function useTimeout({ callback, delay = 1400 }: TUseTimeoutParams) {
   const timeout = useRef<TTimeout>(null);
 
   const callOnTimeout = (value?: string) => {

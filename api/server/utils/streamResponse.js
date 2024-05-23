@@ -3,7 +3,6 @@ const { parseConvo } = require('librechat-data-provider');
 const { saveMessage, getMessages } = require('~/models/Message');
 const { getConvo } = require('~/models/Conversation');
 const { logger } = require('~/config');
-
 /**
  * Sends error data in Server Sent Events format and ends the response.
  * @param {object} res - The server response.
@@ -24,7 +23,14 @@ const sendMessage = (res, message, event = 'message') => {
   if (typeof message === 'string' && message.length === 0) {
     return;
   }
-  res.write(`event: ${event}\ndata: ${JSON.stringify(message)}\n\n`);
+  let ok = res.write(`event: ${event}\ndata: ${JSON.stringify(message)}\n\n`);
+  if (!ok) {
+    logger.warn(
+      `Socket closed:${res.closed} status:${res.statusCode} finished:${res.finished} writable:${res.writable} writableLength:${res.writableLength}  destroyed:${res.destroyed} writableFinished:${res.writableFinished}`,
+    );
+  }
+
+  //logger.warn(ok);
 };
 
 /**

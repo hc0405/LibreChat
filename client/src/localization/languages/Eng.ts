@@ -260,6 +260,7 @@ export default {
   com_auth_facebook_login: 'Continue with Facebook',
   com_auth_github_login: 'Continue with Github',
   com_auth_discord_login: 'Continue with Discord',
+  com_auth_lark_login: 'Login with Lark',
   com_auth_email: 'Email',
   com_auth_email_required: 'Email is required',
   com_auth_email_min_length: 'Email must be at least 6 characters',

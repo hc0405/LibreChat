@@ -262,6 +262,7 @@ export type TStartupConfig = {
   githubLoginEnabled: boolean;
   googleLoginEnabled: boolean;
   openidLoginEnabled: boolean;
+  larkLoginEnabled: boolean;
   openidLabel: string;
   openidImageUrl: string;
   serverDomain: string;

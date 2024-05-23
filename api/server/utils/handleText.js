@@ -28,6 +28,7 @@ const createOnProgress = ({ generation = '', onProgress: _onProgress }) => {
     const payload = { text: tokens, message: true, initial: i === 0, ...rest };
     sendMessage(res, { ...payload, text: tokens });
     _onProgress && _onProgress(payload);
+
     i++;
   };
 
