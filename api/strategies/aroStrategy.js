@@ -47,6 +47,9 @@ async function aroLogin() {
       if (json.short_phone_number) {
         result += '(' + json.short_phone_number + ')';
       }
+      if (!emailExist) {
+        result += '@yohofate.com';
+      }
       const profile = {
         provider: 'aro',
         email: result,
