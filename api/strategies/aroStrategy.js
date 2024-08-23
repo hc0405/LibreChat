@@ -57,7 +57,7 @@ async function aroLogin() {
         _raw: body,
         _json: json,
       };
-
+      logger.error('[aroLogin]', 'profile result:' + result);
       done(null, profile);
     });
   };
@@ -66,16 +66,21 @@ async function aroLogin() {
 
 const aroCB = async (accessToken, refreshToken, profile, cb) => {
   try {
+    logger.error('[aroLogin]', '-1');
     const email = profile.email;
+    logger.error('[aroLogin]', '0:' + email);
     const oldUser = await User.findOne({ email });
     const ALLOW_SOCIAL_REGISTRATION =
       process.env.ALLOW_SOCIAL_REGISTRATION?.toLowerCase() === 'true';
 
     if (oldUser) {
       oldUser.avatar = profile.avatar;
+      logger.error('[aroLogin]', '1');
       await oldUser.save();
+      logger.error('[aroLogin]', '2');
       return cb(null, oldUser);
     } else if (ALLOW_SOCIAL_REGISTRATION) {
+      logger.error('[aroLogin]', '3');
       const newUser = await new User({
         provider: 'aro',
         username: profile.name,
@@ -83,7 +88,7 @@ const aroCB = async (accessToken, refreshToken, profile, cb) => {
         name: profile.displayName,
         avatar: profile.avatar,
       }).save();
-
+      logger.error('[aroLogin]', '4:' + email);
       return cb(null, newUser);
     }
 
