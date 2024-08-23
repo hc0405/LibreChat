@@ -70,6 +70,7 @@ const aroCB = async (accessToken, refreshToken, profile, cb) => {
     const email = profile.email;
 
     logger.error('[aroLogin] 0', profile);
+    console.log(JSON.stringify(profile, null, 2));
     const oldUser = await User.findOne({ email });
     const ALLOW_SOCIAL_REGISTRATION =
       process.env.ALLOW_SOCIAL_REGISTRATION?.toLowerCase() === 'true';
