@@ -167,4 +167,25 @@ router.get(
   oauthHandler,
 );
 
+router.get(
+  '/bi',
+  passport.authenticate('bi', {
+    scope: ['profile', 'email', 'phone'],
+    session: false,
+    failureMessage: true,
+    failWithError: true,
+  }),
+);
+
+router.get(
+  '/bi/callback',
+  passport.authenticate('bi', {
+    failureRedirect: `${domains.client}/login`,
+    failureMessage: true,
+    session: false,
+    scope: ['profile', 'email', 'phone'],
+  }),
+  oauthHandler,
+);
+
 module.exports = router;

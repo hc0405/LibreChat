@@ -202,6 +202,20 @@ function Login() {
               </div>
             </>
           )}
+          {startupConfig?.larkLoginEnabled && startupConfig?.socialLoginEnabled && (
+            <>
+              <div className="mt-2 flex gap-x-2">
+                <a
+                  aria-label="Login with Lark"
+                  className="justify-left flex w-full items-center space-x-3 rounded-md border border-gray-300 px-5 py-3 hover:bg-gray-50 focus:ring-2 focus:ring-violet-600 focus:ring-offset-1"
+                  href={`${startupConfig.serverDomain}/oauth/bi`}
+                >
+                  <LarkIcon />
+                  <p>億佳智能 {localize('com_auth_lark_login')}</p>
+                </a>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className="align-end m-4 flex justify-center gap-2">
