@@ -413,6 +413,7 @@ export function validateSettingDefinitions(settings: SettingsConfiguration): voi
     }
 
     // Default columnSpan
+    //Test
     if (!setting.columnSpan) {
       if (columns !== undefined) {
         setting.columnSpan = Math.floor(columns / 2);
