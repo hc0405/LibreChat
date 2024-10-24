@@ -20,6 +20,7 @@ const {
 } = require('~/server/services/Threads');
 const { sendResponse, sendMessage, sleep, isEnabled, countTokens } = require('~/server/utils');
 const { runAssistant, createOnTextProgress } = require('~/server/services/AssistantService');
+const validateAuthor = require('~/server/middleware/assistants/validateAuthor');
 const { formatMessage, createVisionPrompt } = require('~/app/clients/prompts');
 const { createRun, StreamRunManager } = require('~/server/services/Runs');
 const { addTitle } = require('~/server/services/Endpoints/assistants');
@@ -31,15 +32,14 @@ const { getModelMaxTokens } = require('~/utils');
 const { getOpenAIClient } = require('./helpers');
 const { logger } = require('~/config');
 
-const { handleAbortError } = require('~/server/middleware');
-
 const ten_minutes = 1000 * 60 * 10;
 
 /**
  * @route POST /
  * @desc Chat with an assistant
  * @access Public
- * @param {Express.Request} req - The request object, containing the request data.
+ * @param {object} req - The request object, containing the request data.
+ * @param {object} req.body - The request payload.
  * @param {Express.Response} res - The response object, used to send back a response.
  * @returns {void}
  */
@@ -54,35 +54,12 @@ const chatV1 = async (req, res) => {
     promptPrefix,
     assistant_id,
     instructions,
+    endpointOption,
     thread_id: _thread_id,
     messageId: _messageId,
     conversationId: convoId,
     parentMessageId: _parentId = Constants.NO_PARENT,
   } = req.body;
-
-  /** @type {Partial<TAssistantEndpoint>} */
-  const assistantsConfig = req.app.locals?.[endpoint];
-
-  if (assistantsConfig) {
-    const { supportedIds, excludedIds } = assistantsConfig;
-    const error = { message: 'Assistant not supported' };
-    if (supportedIds?.length && !supportedIds.includes(assistant_id)) {
-      return await handleAbortError(res, req, error, {
-        sender: 'System',
-        conversationId: convoId,
-        messageId: v4(),
-        parentMessageId: _messageId,
-        error,
-      });
-    } else if (excludedIds?.length && excludedIds.includes(assistant_id)) {
-      return await handleAbortError(res, req, error, {
-        sender: 'System',
-        conversationId: convoId,
-        messageId: v4(),
-        parentMessageId: _messageId,
-      });
-    }
-  }
 
   /** @type {OpenAIClient} */
   let openai;
@@ -144,21 +121,22 @@ const chatV1 = async (req, res) => {
           ? ' If using Azure OpenAI, files are only available in the region of the assistant\'s model at the time of upload.'
           : ''
       }`;
-      return sendResponse(res, messageData, errorMessage);
+      return sendResponse(req, res, messageData, errorMessage);
     } else if (error?.message?.includes('string too long')) {
       return sendResponse(
+        req,
         res,
         messageData,
         'Message too long. The Assistants API has a limit of 32,768 characters per message. Please shorten it and try again.',
       );
     } else if (error?.message?.includes(ViolationTypes.TOKEN_BALANCE)) {
-      return sendResponse(res, messageData, error.message);
+      return sendResponse(req, res, messageData, error.message);
     } else {
       logger.error('[/assistants/chat/]', error);
     }
 
     if (!openai || !thread_id || !run_id) {
-      return sendResponse(res, messageData, defaultErrorMessage);
+      return sendResponse(req, res, messageData, defaultErrorMessage);
     }
 
     await sleep(2000);
@@ -245,10 +223,10 @@ const chatV1 = async (req, res) => {
       };
     } catch (error) {
       logger.error('[/assistants/chat/] Error finalizing error process', error);
-      return sendResponse(res, messageData, 'The Assistant run failed');
+      return sendResponse(req, res, messageData, 'The Assistant run failed');
     }
 
-    return sendResponse(res, finalEvent);
+    return sendResponse(req, res, finalEvent);
   };
 
   try {
@@ -306,11 +284,12 @@ const chatV1 = async (req, res) => {
     const { openai: _openai, client } = await getOpenAIClient({
       req,
       res,
-      endpointOption: req.body.endpointOption,
+      endpointOption,
       initAppClient: true,
     });
 
     openai = _openai;
+    await validateAuthor({ req, openai });
 
     if (previousMessages.length) {
       parentMessageId = previousMessages[previousMessages.length - 1].messageId;
@@ -334,6 +313,10 @@ const chatV1 = async (req, res) => {
       body.additional_instructions = promptPrefix;
     }
 
+    if (typeof endpointOption.artifactsPrompt === 'string' && endpointOption.artifactsPrompt) {
+      body.additional_instructions = `${body.additional_instructions ?? ''}\n${endpointOption.artifactsPrompt}`.trim();
+    }
+
     if (instructions) {
       body.instructions = instructions;
     }
@@ -355,12 +338,12 @@ const chatV1 = async (req, res) => {
     };
 
     const addVisionPrompt = async () => {
-      if (!req.body.endpointOption.attachments) {
+      if (!endpointOption.attachments) {
         return;
       }
 
       /** @type {MongoFile[]} */
-      const attachments = await req.body.endpointOption.attachments;
+      const attachments = await endpointOption.attachments;
       if (attachments && attachments.every((attachment) => checkOpenAIStorage(attachment.source))) {
         return;
       }
@@ -404,6 +387,9 @@ const chatV1 = async (req, res) => {
 
       return files;
     };
+
+    /** @type {Promise<Run>|undefined} */
+    let userMessagePromise;
 
     const initializeThread = async () => {
       /** @type {[ undefined | MongoFile[]]}*/
@@ -461,7 +447,7 @@ const chatV1 = async (req, res) => {
       previousMessages.push(requestMessage);
 
       /* asynchronous */
-      saveUserMessage({ ...requestMessage, model });
+      userMessagePromise = saveUserMessage(req, { ...requestMessage, model });
 
       conversation = {
         conversationId,
@@ -605,7 +591,10 @@ const chatV1 = async (req, res) => {
     });
     res.end();
 
-    await saveAssistantMessage({ ...responseMessage, model });
+    if (userMessagePromise) {
+      await userMessagePromise;
+    }
+    await saveAssistantMessage(req, { ...responseMessage, model });
 
     if (parentMessageId === Constants.NO_PARENT && !_thread_id) {
       addTitle(req, {

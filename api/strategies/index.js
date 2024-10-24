@@ -9,6 +9,7 @@ const biLogin = require('./biStrategy');
 //const larkStrategy = require('./larkStrategy');
 const setupOpenId = require('./openidStrategy');
 const jwtLogin = require('./jwtStrategy');
+const ldapLogin = require('./ldapStrategy');
 
 module.exports = {
   passportLogin,
@@ -22,4 +23,5 @@ module.exports = {
   aroLogin,
   biLogin,
   //larkStrategy,
+  ldapLogin,
 };

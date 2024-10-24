@@ -21,6 +21,10 @@ jest.mock('./Config/loadCustomConfig', () => {
 jest.mock('./Files/Firebase/initialize', () => ({
   initializeFirebase: jest.fn(),
 }));
+jest.mock('~/models/Role', () => ({
+  initializeRoles: jest.fn(),
+  updateAccessPermissions: jest.fn(),
+}));
 jest.mock('./ToolService', () => ({
   loadAndFormatTools: jest.fn().mockReturnValue({
     ExampleTool: {
@@ -94,8 +98,6 @@ describe('AppService', () => {
       socialLogins: ['testLogin'],
       fileStrategy: 'testStrategy',
       interfaceConfig: expect.objectContaining({
-        privacyPolicy: undefined,
-        termsOfService: undefined,
         endpointsMenu: true,
         modelSelect: true,
         parameters: true,
@@ -218,6 +220,7 @@ describe('AppService', () => {
             pollIntervalMs: 5000,
             timeoutMs: 30000,
             supportedIds: ['id1', 'id2'],
+            privateAssistants: false,
           },
         },
       }),
@@ -232,6 +235,7 @@ describe('AppService', () => {
         pollIntervalMs: 5000,
         timeoutMs: 30000,
         supportedIds: expect.arrayContaining(['id1', 'id2']),
+        privateAssistants: false,
       }),
     );
   });
@@ -505,7 +509,31 @@ describe('AppService updating app.locals and issuing warnings', () => {
 
     const { logger } = require('~/config');
     expect(logger.warn).toHaveBeenCalledWith(
-      expect.stringContaining('Both `supportedIds` and `excludedIds` are defined'),
+      expect.stringContaining(
+        'The \'assistants\' endpoint has both \'supportedIds\' and \'excludedIds\' defined.',
+      ),
+    );
+  });
+
+  it('should log a warning when privateAssistants and supportedIds or excludedIds are provided', async () => {
+    const mockConfig = {
+      endpoints: {
+        assistants: {
+          privateAssistants: true,
+          supportedIds: ['id1'],
+        },
+      },
+    };
+    require('./Config/loadCustomConfig').mockImplementationOnce(() => Promise.resolve(mockConfig));
+
+    const app = { locals: {} };
+    await require('./AppService')(app);
+
+    const { logger } = require('~/config');
+    expect(logger.warn).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'The \'assistants\' endpoint has both \'privateAssistants\' and \'supportedIds\' or \'excludedIds\' defined.',
+      ),
     );
   });
 

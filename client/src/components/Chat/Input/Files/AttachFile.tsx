@@ -1,50 +1,38 @@
 import React from 'react';
-import {
-  EModelEndpoint,
-  supportsFiles,
-  fileConfig as defaultFileConfig,
-  mergeFileConfig,
-} from 'librechat-data-provider';
-import { useGetFileConfig } from '~/data-provider';
+import { FileUpload, TooltipAnchor } from '~/components/ui';
 import { AttachmentIcon } from '~/components/svg';
-import { FileUpload } from '~/components/ui';
-import { useFileHandling } from '~/hooks';
+import { useLocalize } from '~/hooks';
+import { cn } from '~/utils';
 
 const AttachFile = ({
-  endpoint,
-  endpointType,
-  disabled = false,
+  isRTL,
+  disabled,
+  handleFileChange,
 }: {
-  endpoint: EModelEndpoint | '';
-  endpointType?: EModelEndpoint;
+  isRTL: boolean;
   disabled?: boolean | null;
+  handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
-  const { handleFileChange } = useFileHandling();
-  const { data: fileConfig = defaultFileConfig } = useGetFileConfig({
-    select: (data) => mergeFileConfig(data),
-  });
-  const endpointFileConfig = fileConfig.endpoints[endpoint ?? ''];
-
-  if (!supportsFiles[endpointType ?? endpoint ?? ''] || endpointFileConfig?.disabled) {
-    return null;
-  }
+  const localize = useLocalize();
+  const isUploadDisabled = disabled ?? false;
 
   return (
-    <div className="absolute bottom-2 left-2 md:bottom-3 md:left-4">
-      <FileUpload handleFileChange={handleFileChange} className="flex">
-        <button
-          disabled={!!disabled}
-          type="button"
-          className="btn relative p-0 text-black dark:text-white"
-          aria-label="Attach files"
-          style={{ padding: 0 }}
-        >
-          <div className="flex w-full items-center justify-center gap-2">
-            <AttachmentIcon />
-          </div>
-        </button>
-      </FileUpload>
-    </div>
+    <FileUpload handleFileChange={handleFileChange} className="flex">
+      <TooltipAnchor
+        id="audio-recorder"
+        aria-label={localize('com_sidepanel_attach_files')}
+        disabled={isUploadDisabled}
+        className={cn(
+          'absolute flex size-[35px] items-center justify-center rounded-full p-1 transition-colors hover:bg-surface-hover',
+          isRTL ? 'bottom-2 right-2' : 'bottom-2 left-1 md:left-2',
+        )}
+        description={localize('com_sidepanel_attach_files')}
+      >
+        <div className="flex w-full items-center justify-center gap-2">
+          <AttachmentIcon />
+        </div>
+      </TooltipAnchor>
+    </FileUpload>
   );
 };
 
