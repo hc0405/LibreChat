@@ -41,7 +41,6 @@ const languageMap: Record<string, Language> = {
   'vi-VN': Vietnamese,
   'tr-TR': Turkish,
   'nl-NL': Dutch,
-  'zh-TW': TraditionalChinese,
   'id-ID': Indonesia,
   'he-HE': Hebrew,
   'fi-FI': Finnish,

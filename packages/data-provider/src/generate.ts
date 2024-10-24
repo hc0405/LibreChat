@@ -414,7 +414,13 @@ export function validateSettingDefinitions(settings: SettingsConfiguration): voi
 
     // Default columnSpan
     if (!setting.columnSpan) {
-      setting.columnSpan = Math.floor(columns / 2);
+      if (columns !== undefined) {
+        setting.columnSpan = Math.floor(columns / 2);
+      } else {
+        // Handle the case when columns is undefined
+        console.error('Columns is undefined');
+        setting.columnSpan = 0; // or some appropriate default value
+      }
     }
 
     // Default label to key
