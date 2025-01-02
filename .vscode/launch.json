@@ -6,11 +6,15 @@
       "request": "launch",
       "name": "Launch LibreChat (debug)",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/api/server/index.js",
-      "env": {
-        "NODE_ENV": "production"
-      },
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "backend"],
       "console": "integratedTerminal"
+    },
+    {
+      "command": "npm run backend",
+      "name": "Run npm backend",
+      "request": "launch",
+      "type": "node-terminal"
     }
   ]
 }

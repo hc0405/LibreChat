@@ -126,7 +126,7 @@ const AskController = async (req, res, next, initializeClient, addTitle) => {
         // parentMessageId: overrideParentMessageId || userMessageId,
       },
     };
-
+    logger.info('Start Send message: (' + req.user.name + ')' + '(' + req.user.email + '):');
     let response = await client.sendMessage(text, messageOptions);
     response.endpoint = endpointOption.endpoint;
 
